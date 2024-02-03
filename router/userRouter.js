@@ -23,8 +23,10 @@ router.post('/register', async (req, res) => {
         res.status(500).send({ err: error.message });
     }
 })
-router.get('/', async (req, res) => {
+router.post('/all', async (req, res) => {
+    const email = req.body.email
     try {
+        const isAdmin = await User.findOne({ email: email, role: "admin" })
         const users = await User.find()
             .select(ignoreFeild)
             .exec()
@@ -57,9 +59,10 @@ router.get('/check/:email', async (req, res) => {
         res.status(500).json({ err: error.message })
     }
 })
-router.put('/:id', async (req, res) => {
+router.put('/:email', async (req, res) => {
+    
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        const user = await User.updateOne({ email: req.params.email }, req.body)
         res.status(200).json({ message: "User Updated Successfully" })
     } catch (error) {
         res.status(500).json({ err: error.message })

@@ -25,6 +25,10 @@ const appointmentSchema = new mongoose.Schema({
         type: Object,
         required: true
     },
+    status: {
+        type: String,
+        default: 'pending'
+    }
 })
 
 const Appointment = mongoose.model('Appointment', appointmentSchema)
